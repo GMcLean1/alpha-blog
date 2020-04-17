@@ -21,7 +21,7 @@
           <div class="form-group row">
             <%= f.label :password, class: "col-2 col-form-label text-light" %>
             <div class="col-10">
-              <%= f.password_field :password, class: "form-control shadow rounded", placeholder: "Choose a password"  %>
+              <%= f.password_field(:password, class: "form-control shadow rounded",  placeholder: @user.new_record? ? "Choose a password" : "Enter new passord (optional)" )  %>
             </div>
           </div>
           
