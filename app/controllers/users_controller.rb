@@ -37,6 +37,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    #byebug
     if @user.update(user_params)
       flash[:notice] = "Your account information was successfully updated"
       redirect_to @user
@@ -51,7 +52,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :email, :password)
+    params.require(:user).permit(:username, :email, :password, :admin)
   end
 
   def set_user
