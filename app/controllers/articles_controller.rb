@@ -1,6 +1,8 @@
 class ArticlesController < ApplicationController
   
   before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action :require_user, except: [:index, :show]
+  before_action :require_same_user, only: [:edit, :update, :destroy]
 
   def show
 
@@ -20,8 +22,9 @@ class ArticlesController < ApplicationController
 
 
   def create
-    @article = Article.new(article_params)
-    @article.user = User.first
+    @article = Article.new(article_params)    
+    #@article.user = User.find(session[:user_id])
+    @article.user = helpers.current_user
     if @article.save
       flash[:notice] = "Article was created successfully."
       redirect_to article_path(@article)
