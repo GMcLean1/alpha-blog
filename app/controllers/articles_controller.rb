@@ -56,4 +56,12 @@ class ArticlesController < ApplicationController
   def article_params
     params.require(:article).permit(:title,:description)
   end
+
+  def require_same_user
+    if helpers.current_user != @article.user and !helpers.current_user.admin?
+      flash[:danger] = "You can only edit or delete your own articles"
+      redirect_to root_path
+    end
+  end
+
 end

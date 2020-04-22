@@ -1,11 +1,18 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:edit, :update, :show]
-  before_action :require_same_user, only: [:edit, :update]
-  
+  before_action :set_user, only: [:edit, :update, :show, :destroy]
+  before_action :require_same_user, only: [:edit, :update, :destroy]
+  before_action :require_admin, only: [:destroy]
+
   def show
     @articles = @user.articles.paginate(page: params[:page], per_page: 5)
   end
 
+  def destroy
+    @user.destroy
+    flash[:alert] = "User #{@user.username} and all articles created by user have been deleted"
+    redirect_to users_path
+  end
+  
   def new
     @user=User.new
   end
@@ -56,10 +63,17 @@ class UsersController < ApplicationController
       flash[:danger] = "You must be logged in to edit user accounts"
       redirect_to root_path
     else 
-      if helpers.current_user != @user
+      if helpers.current_user != @user and !helpers.current_user.admin?
         flash[:danger] = "You can only edit your own account"
         redirect_to root_path
       end
+    end
+  end
+
+  def require_admin
+    if helpers.logged_in? and !helpers.current_user.admin?
+      flash[:danger] = "only admin users perform that action"
+      redirect_to root_path
     end
   end
 

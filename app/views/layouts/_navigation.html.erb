@@ -22,7 +22,11 @@
                 </div>
             </li>
             <li class="nav-item">
-              <%= link_to current_user.username, user_path(current_user), class: "nav-link" %>
+              <% if current_user.admin? %>
+                <%= link_to current_user.username+" - Admin", user_path(current_user), class: "nav-link" %>
+              <% else %>
+                <%= link_to current_user.username, user_path(current_user), class: "nav-link" %>
+              <% end %>
             </li>
             <li class="nav-item">
               <%= link_to "Logout", logout_path, class: "nav-link", method: :delete %>
