@@ -1,0 +1,26 @@
+<div class="container">
+  <% @categories.each do |cat| %>
+    <div class="row justify-content-md-center">
+      <div class="col-8 mt-4">
+        <div class="card text-center shadow mb-5 bg-white rounded">
+          <div class="card-header font-italic">
+            <%= link_to cat.name, category_path(cat) %>
+          </div>
+          <div class="card-body">
+              <%= link_to 'Edit', edit_category_path(cat), class: "btn btn-outline-success" %>
+              <%= link_to 'Delete', category_path(cat), class: "btn btn-outline-danger", method: :delete, 
+                data: { confirm: "Are you sure you want to delete this category?" } %>
+          </div>
+          <div class="card-footer text-muted">
+            <small>Created <%= time_ago_in_words(cat.created_at) %> ago, 
+              edited <%= time_ago_in_words(cat.created_at) %> ago 
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if @categories.count == 0 %>
+    <p class="text-center font-italic" >No categories currently on file<p>
+  <% end %>
+</div>
